@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # SkillSphere
 
 **Your skills are your currency. Your community is your classroom.**
@@ -209,3 +210,6 @@ Create the empty GitHub repository first and replace `YOUR_USERNAME`.
 ## Competition pitch
 
 "SkillSphere turns knowledge into a community resource. Our reciprocal matching engine finds people whose learning goals complement each other, while SkillChain discovers three-way exchanges when a perfect one-to-one match doesn't exist. TimeTwin helps partners find shared availability, and Skill DNA makes each person's teaching and learning identity discoverable. Everyone has something to teach, and everyone has something to learn."
+=======
+# SkillSphere
+>>>>>>> 65a4ad23bb31c1faed5930d2d6935d0c4153c596
