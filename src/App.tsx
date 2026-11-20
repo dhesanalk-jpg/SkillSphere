@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState, type ReactNode } from 'react'
 import {
   Activity, ArrowDownRight, ArrowLeftRight, ArrowRight, Award, Bell, Bookmark, CalendarDays,
   Check, CheckCircle2, ChevronDown, ChevronRight, CircleHelp, Clock3, Compass, Crown,
@@ -139,7 +139,7 @@ export default function App() {
       <footer className="footer"><span>© 2025 SkillSphere</span><span>Built on the belief that everyone has something to teach.</span><span className="cloud-status"><span className="online-dot"/>{cloudEnabled||apiEnabled?'Cloud connected':'Demo mode · saved on this device'}</span></footer>
     </main>
     {showProfile&&<Modal title="Your profile" onClose={()=>setShowProfile(false)}><div className="profile-modal"><div className="avatar avatar-large avatar-me">{me.avatar||initials(me.name)}</div><h2>{me.name}</h2><p>{me.role} · {me.location}</p><p className="muted-text">{me.bio}</p><div className="profile-modal-stats"><div><b>{me.teaches.length}</b><span>Teaching</span></div><div><b>{me.learns.length}</b><span>Learning</span></div><div><b>{me.sessions}</b><span>Sessions</span></div></div><button className="btn-primary full" onClick={()=>{setShowProfile(false);setShowEdit(true)}}>Edit Skill DNA</button></div></Modal>}
-    {showEdit&&<EditProfile me={me} onClose={()=>setShowEdit(false)} onSave={patch=>{updateMe(patch);setShowEdit(false);notify('Your Skill DNA has been updated.')}}/>}
+    {showEdit&&<EditProfile me={me} onClose={()=>setShowEdit(false)} onSave={(patch: Partial<Person>)=>{updateMe(patch);setShowEdit(false);notify('Your Skill DNA has been updated.')}}/>}
     {showBooking&&<Modal title="Propose a skill exchange" onClose={()=>setShowBooking(null)}><div className="booking-person"><div className={`avatar avatar-${showBooking.color}`}>{showBooking.avatar}</div><div><b>{showBooking.name}</b><span>{showBooking.role}</span></div><span className="match-score">{matches.find(m=>m.person.id===showBooking.id)?.score||'—'}% match</span></div><label className="field-label">What would you like to learn?</label><select value={bookingSkill} onChange={e=>setBookingSkill(e.target.value)}>{showBooking.teaches.map(s=><option key={s}>{s}</option>)}</select><label className="field-label">Preferred shared time</label><select value={bookingTime} onChange={e=>setBookingTime(e.target.value)}>{(bestTime(me,showBooking).length?bestTime(me,showBooking):timeOptions).map(s=><option key={s}>{s}</option>)}</select><div className="notice"><ShieldCheck size={16}/> No money changes hands. This is a mutual knowledge exchange.</div><button className="btn-primary full" onClick={confirmBooking}>Send exchange request <ArrowRight size={16}/></button></Modal>}
     {reviewTarget&&<Modal title="Celebrate the exchange" onClose={()=>setReviewTarget(null)}><p className="muted-text">How was your session with {personName(reviewTarget.personId,people,me)}?</p><div className="rating-picker">{[1,2,3,4,5].map(n=><button key={n} className={n<=reviewRating?'selected':''} onClick={()=>setReviewRating(n)}><Star size={25} fill="currentColor"/></button>)}</div><textarea className="review-input" placeholder="What did you learn? What made this exchange valuable?" value={reviewText} onChange={e=>setReviewText(e.target.value)}/><button className="btn-primary full" onClick={submitReview}>Submit review & complete session</button></Modal>}
     {toast&&<div className="toast"><CheckCircle2 size={17}/>{toast}</div>}
@@ -148,7 +148,7 @@ export default function App() {
 
 function ArrowUpRightIcon(){return <ArrowRight size={14}/>}
 
-function PageHeading({eyebrow,title,desc,action}:{eyebrow:string;title:string;desc:string;action?:any}){
+function PageHeading({eyebrow,title,desc,action}:{eyebrow:string;title:ReactNode;desc:string;action?:ReactNode}){
   return <div className="page-heading"><div><div className="eyebrow">{eyebrow}</div><h1>{title}</h1><p>{desc}</p></div>{action}</div>
 }
 function Overview({me,matches,chains,bookings,people,go,openBooking,setShowProfile,completed,upcoming}:any){
